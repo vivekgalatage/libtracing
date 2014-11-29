@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {
+        "BASE_EVENT": {
+            "type": "object",
+            "properties": {
+                "name": {  "type": "string" },
+                "ph": {
+                    "enum": [
+                        "B", "E", "I", "C",
+                        "S", "T", "F", "s",
+                        "t", "f", "P", "O",
+                        "N", "D", "X", "M"
+                    ]
+                },
+                "cat": { "type": "string" }
+            }
+        },
+        "META_EVENT": {
+            "allOf": [
+                { "$ref": "#/definitions/BASE_EVENT" },
+                { "properties": {
+                        "ph": {
+                            "enum": [ "M" ]
+                        },
+                        "name": {
+                            "enum": [
+                                "num_cpus",
+                                "process_labels",
+                                "process_name",
+                                "process_sort_index",
+                                "thread_name",
+                                "thread_sort_index"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "OTHER_EVENT": {
+            "allOf": [
+                { "$ref": "#/definitions/BASE_EVENT" },
+                { "properties": {
+                        "ph": {
+                            "enum": [
+                                "B", "E", "I", "C",
+                                "S", "T", "F", "s",
+                                "t", "f", "P", "O",
+                                "N", "D", "X"
+                            ]
+                        },
+                        "name": { "type": "string" }
+                    }
+                }
+            ]
+        }
+    },
+
+    "type": "object",
+    "properties": {
+        "traceEvents": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    { "$ref": "#/definitions/OTHER_EVENT" },
+                    { "$ref": "#/definitions/META_EVENT" }
+                ]
+            }
+        }
+    }
+}
