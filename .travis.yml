@@ -1,0 +1,3 @@
+language: python
+script:
+  - ./tests/schema-validator-unittest.py
