@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "",
+    "version": 1.0,
+
+    "definitions": {
+        "TRACE": {
+            "type": "object",
+            "properties": {
+                "parameters": [
+                    { 
+                        "name": "categoryName",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "eventName",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "varArgsCount",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "name": "varArgs",
+                        "pattern": "(string, integer|number|boolean)*"
+                    }
+                ],
+                "return": {
+
+                },
+                "events": {
+
+                }
+            }
+        },
+    },
+
+    "namespace": {
+        "name": "traceEvent",
+        "interfaces": [
+            { "trace": { "$ref": "#/definitions/TRACE" } },
+        ]
+    }
+}
+
