@@ -1,19 +1,19 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "",
+    "version": 1.0,
     "definitions": {
         "BASE_EVENT": {
             "type": "object",
             "properties": {
+                "cat": { "type": "string" },
+                "dur": { "type": "integer" },
                 "name": {  "type": "string" },
-                "ph": {
-                    "enum": [
-                        "B", "E", "I", "C",
-                        "S", "T", "F", "s",
-                        "t", "f", "P", "O",
-                        "N", "D", "X", "M"
-                    ]
-                },
-                "cat": { "type": "string" }
+                "pid": { "type": "integer" },
+                "tdur": { "type": "integer" },
+                "tid": { "type": "integer" },
+                "ts": { "type": "integer" },
+                "tts": { "type": "integer"}
             }
         },
         "META_EVENT": {
@@ -30,7 +30,8 @@
                                 "process_name",
                                 "process_sort_index",
                                 "thread_name",
-                                "thread_sort_index"
+                                "thread_sort_index",
+                                "overhead"
                             ]
                         }
                     }
@@ -46,7 +47,7 @@
                                 "B", "E", "I", "C",
                                 "S", "T", "F", "s",
                                 "t", "f", "P", "O",
-                                "N", "D", "X"
+                                "N", "D", "X", "p", "i"
                             ]
                         },
                         "name": { "type": "string" }
