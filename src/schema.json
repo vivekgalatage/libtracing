@@ -3,6 +3,33 @@
     "description": "",
     "version": 1.0,
     "definitions": {
+        "PHASE_B": {
+            "enum": ["B", "E"]
+        },
+        "PHASE_M": {
+            "enum": ["M"]
+        },
+        "FIELD_NAME": {
+            "type": "string",
+            "description": "The name of the event, as displayed in Trace Viewer."
+        },
+        "FIELD_CATEGORY": {
+            "type": "string",
+            "description": "The event categories. This is a comma separated list of categories for the event. The categories can be used to hide events in the Trace Viewer UI."
+        },
+        "FIELD_PHASE": {
+            "type": "string",
+            "description": "The event type. This is a single character which changes depending on the type of event being output.",
+            "enum": [
+                    { "$ref": "#/definitions/PHASE_B"},
+                    "B", "C", "D", "E", "F", "f",
+                    "I", "i", "N", "O", "P",
+                    "p", "S", "s", "T", "t", "X"
+                ]
+        },
+        "FIELD_TIMESTAMP": {
+            "type": "integer",
+        },
         "BASE_EVENT": {
             "type": "object",
             "properties": {
@@ -21,7 +48,7 @@
                 { "$ref": "#/definitions/BASE_EVENT" },
                 { "properties": {
                         "ph": {
-                            "enum": [ "M" ]
+                            "$ref": "#/definitions/PHASE_M"
                         },
                         "name": {
                             "enum": [
@@ -43,12 +70,10 @@
                 { "$ref": "#/definitions/BASE_EVENT" },
                 { "properties": {
                         "ph": {
-                            "enum": [
-                                "B", "E", "I", "C",
-                                "S", "T", "F", "s",
-                                "t", "f", "P", "O",
-                                "N", "D", "X", "p", "i"
-                            ]
+                            "$ref": "#/definitions/FIELD_PHASE",
+                            "not": {
+                                "enum": ["M"]
+                            }
                         },
                         "name": { "type": "string" }
                     }
@@ -58,6 +83,9 @@
     },
 
     "type": "object",
+    "required": [
+        "traceEvents"
+    ],
     "properties": {
         "traceEvents": {
             "type": "array",
