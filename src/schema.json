@@ -69,55 +69,89 @@
                 "enum": [ "M" ]
             }
         },
-
-        "BASE_EVENT": {
-            "type": "object",
-            "properties": {
-                "cat": { "$ref": "#/definitions/fields/category" },
-                "name": {  "$ref": "#/definitions/fields/name" },
-                "pid": { "$ref": "#/definitions/fields/process-id" },
-                "dur": { "$ref": "#/definitions/fields/duration" },
-                "ts": { "$ref": "#/definitions/fields/timestamp" },
-                "tid": { "$ref": "#/definitions/fields/thread-id" },
-                "tdur": { "$ref": "#/definitions/fields/thread-duration" },
-                "tts": { "$ref": "#/definitions/fields/thread-timestamp" }
-            }
-        },
-        "META_EVENT": {
-            "allOf": [
-                { "$ref": "#/definitions/BASE_EVENT" },
-                { "properties": {
-                        "ph": {
-                            "$ref": "#/definitions/phases-of/metadata-events"
-                        },
-                        "name": {
-                            "enum": [
-                                "num_cpus",
-                                "process_labels",
-                                "process_name",
-                                "process_sort_index",
-                                "thread_name",
-                                "thread_sort_index",
-                                "overhead"
-                            ]
+        "events": {
+            "base-event": {
+                "type": "object",
+                "properties": {
+                    "cat": { "$ref": "#/definitions/fields/category" },
+                    "name": {  "$ref": "#/definitions/fields/name" },
+                    "pid": { "$ref": "#/definitions/fields/process-id" },
+                    "dur": { "$ref": "#/definitions/fields/duration" },
+                    "ts": { "$ref": "#/definitions/fields/timestamp" },
+                    "tid": { "$ref": "#/definitions/fields/thread-id" },
+                    "tdur": { "$ref": "#/definitions/fields/thread-duration" },
+                    "tts": { "$ref": "#/definitions/fields/thread-timestamp" },
+                    "ph": {
+                        "anyOf": [
+                            { "$ref": "#/definitions/phases-of/duration-events" },
+                            { "$ref": "#/definitions/phases-of/complete-events" },
+                            { "$ref": "#/definitions/phases-of/instant-events" },
+                            { "$ref": "#/definitions/phases-of/counter-events" },
+                            { "$ref": "#/definitions/phases-of/async-events" },
+                            { "$ref": "#/definitions/phases-of/flow-events" },
+                            { "$ref": "#/definitions/phases-of/sample-events" },
+                            { "$ref": "#/definitions/phases-of/object-events" },
+                            { "$ref": "#/definitions/phases-of/metadata-events" }
+                        ]
+                    }
+                }
+            },
+            "duration-event": {
+                "required": [ "pid", "tid", "ph", "ts" ],
+                "allOf": [
+                    {
+                        "$ref": "#/definitions/events/base-event"
+                    },
+                    {
+                        "properties": {
+                            "ph": {
+                                "$ref": "#/definitions/phases-of/duration-events"
+                            }
                         }
                     }
-                }
-            ]
-        },
-        "OTHER_EVENT": {
-            "allOf": [
-                { "$ref": "#/definitions/BASE_EVENT" },
-                { "properties": {
-                        "ph": {
-                            "allOf": [
-                                { "$ref": "#/definitions/phases-of/async-events" },
-                            ],
-                        },
-                        "name": { "type": "string" }
+                ]
+            },
+            "metadata-event": {
+                "allOf": [
+                    {
+                        "$ref": "#/definitions/events/base-event"
+                    },
+                    {
+                        "properties": {
+                            "name": {
+                                "enum": [
+                                    "num_cpus",
+                                    "process_labels",
+                                    "process_name",
+                                    "process_sort_index",
+                                    "thread_name",
+                                    "thread_sort_index",
+                                    "overhead"
+                                ]
+                            },
+                            "ph": {
+                                "$ref": "#/definitions/phases-of/metadata-events"
+                            }
+                        }
                     }
-                }
-            ]
+                ]
+            },
+            "other-event": {
+                "allOf": [
+                    {
+                        "$ref": "#/definitions/events/base-event"
+                    },
+                    {
+                        "properties": {
+                            "ph": {
+                                "allOf": [
+                                    { "$ref": "#/definitions/phases-of/async-events" }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
         }
     },
 
@@ -130,8 +164,9 @@
             "type": "array",
             "items": {
                 "oneOf": [
-                    { "$ref": "#/definitions/OTHER_EVENT" },
-                    { "$ref": "#/definitions/META_EVENT" }
+                    { "$ref": "#/definitions/events/duration-event" },
+                    { "$ref": "#/definitions/events/other-event" },
+                    { "$ref": "#/definitions/events/metadata-event" }
                 ]
             }
         }

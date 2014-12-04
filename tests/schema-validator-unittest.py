@@ -76,5 +76,40 @@ class SchemaValidationTest(unittest.TestCase):
         }
         self.validateJSONData(data, True)
 
+    def test_ValidDataForDurationEventBegin(self):
+        data = {
+            "traceEvents": [
+                {
+                    "args": {
+                        "sort_index": -5
+                    },
+                    "cat": "__metadata",
+                    "name": "process_sort_index",
+                    "ph": "B",
+                    "pid": 29424,
+                    "tid": 458,
+                    "ts": 1
+                }
+            ]
+        }
+        self.validateJSONData(data, False)
+
+    def test_InsufficientPropertiesForDurationEventEndPhaseNameShouldThrow(self):
+        data = {
+            "traceEvents": [
+                {
+                    "args": {
+                        "sort_index": -5
+                    },
+                    "cat": "cat1, cat2",
+                    "name": "some-name",
+                    "ph": "B",
+                    "pid": 29424,
+                    "tid": 458
+                }
+            ]
+        }
+        self.validateJSONData(data, True)
+
 if (__name__ == "__main__"):
     unittest.main(verbosity=2)
