@@ -3,44 +3,84 @@
     "description": "",
     "version": 1.0,
     "definitions": {
-        "PHASE_B": {
-            "enum": ["B", "E"]
+        "fields": {
+            "name": {
+                "type": "string",
+                "description": "The name of the event, as displayed in Trace Viewer."
+            },
+            "category": {
+                "type": "string",
+                "description": "The event categories. This is a comma separated list of categories for the event. The categories can be used to hide events in the Trace Viewer UI."
+            },
+            "process-id": {
+                "type": "integer"
+            },
+            "durartion": {
+                "type": "integer"
+            },
+            "timestamp": {
+                "type": "integer"
+            },
+            "thread-id": {
+                "type": "integer"
+            },
+            "thread-duration": {
+                "type": "integer"
+            },
+            "thread-timestamp": {
+                "type": "integer"
+            }
         },
-        "PHASE_M": {
-            "enum": ["M"]
+        "phases-of": {
+            "duration-events": {
+                "type": "string",
+                "enum": [ "B", "E" ]
+            },
+            "complete-events": {
+                "type": "string",
+                "enum": [ "X" ]
+            },
+            "instant-events": {
+                "type": "string",
+                "enum": [ "I" ]
+            },
+            "counter-events": {
+                "type": "string",
+                "enum": [ "C" ]
+            },
+            "async-events": {
+                "type": "string",
+                "enum": [ "b", "n", "e" ]
+            },
+            "flow-events": {
+                "type": "string",
+                "enum": [ "s", "f", "t" ]
+            },
+            "sample-events": {
+                "type": "string",
+                "enum": [ "P" ]
+            },
+            "object-events": {
+                "type": "string",
+                "enum": [ "N", "O", "D" ]
+            },
+            "metadata-events": {
+                "type": "string",
+                "enum": [ "M" ]
+            }
         },
-        "FIELD_NAME": {
-            "type": "string",
-            "description": "The name of the event, as displayed in Trace Viewer."
-        },
-        "FIELD_CATEGORY": {
-            "type": "string",
-            "description": "The event categories. This is a comma separated list of categories for the event. The categories can be used to hide events in the Trace Viewer UI."
-        },
-        "FIELD_PHASE": {
-            "type": "string",
-            "description": "The event type. This is a single character which changes depending on the type of event being output.",
-            "enum": [
-                    { "$ref": "#/definitions/PHASE_B"},
-                    "B", "C", "D", "E", "F", "f",
-                    "I", "i", "N", "O", "P",
-                    "p", "S", "s", "T", "t", "X"
-                ]
-        },
-        "FIELD_TIMESTAMP": {
-            "type": "integer",
-        },
+
         "BASE_EVENT": {
             "type": "object",
             "properties": {
-                "cat": { "type": "string" },
-                "dur": { "type": "integer" },
-                "name": {  "type": "string" },
-                "pid": { "type": "integer" },
-                "tdur": { "type": "integer" },
-                "tid": { "type": "integer" },
-                "ts": { "type": "integer" },
-                "tts": { "type": "integer"}
+                "cat": { "$ref": "#/definitions/fields/category" },
+                "name": {  "$ref": "#/definitions/fields/name" },
+                "pid": { "$ref": "#/definitions/fields/process-id" },
+                "dur": { "$ref": "#/definitions/fields/duration" },
+                "ts": { "$ref": "#/definitions/fields/timestamp" },
+                "tid": { "$ref": "#/definitions/fields/thread-id" },
+                "tdur": { "$ref": "#/definitions/fields/thread-duration" },
+                "tts": { "$ref": "#/definitions/fields/thread-timestamp" }
             }
         },
         "META_EVENT": {
@@ -48,7 +88,7 @@
                 { "$ref": "#/definitions/BASE_EVENT" },
                 { "properties": {
                         "ph": {
-                            "$ref": "#/definitions/PHASE_M"
+                            "$ref": "#/definitions/phases-of/metadata-events"
                         },
                         "name": {
                             "enum": [
@@ -70,10 +110,9 @@
                 { "$ref": "#/definitions/BASE_EVENT" },
                 { "properties": {
                         "ph": {
-                            "$ref": "#/definitions/FIELD_PHASE",
-                            "not": {
-                                "enum": ["M"]
-                            }
+                            "allOf": [
+                                { "$ref": "#/definitions/phases-of/async-events" },
+                            ],
                         },
                         "name": { "type": "string" }
                     }
