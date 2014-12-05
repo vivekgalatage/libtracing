@@ -40,6 +40,10 @@ class SchemaValidationTest(unittest.TestCase):
         }
         self.validateJSONData(data, False)
 
+    def test_TopLevelTraceEventsPropertyMissingShouldThrow(self):
+        data = { "anythingElse": "" }
+        self.validateJSONData(data, True)
+
     def test_InvalidNameForMetadataEventShouldThrow(self):
         data = {
             "traceEvents": [

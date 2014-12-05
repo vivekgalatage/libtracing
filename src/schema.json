@@ -29,42 +29,40 @@
             },
             "thread-timestamp": {
                 "type": "integer"
-            }
-        },
-        "phases-of": {
-            "duration-events": {
+            },
+            "durationEvent-phases": {
                 "type": "string",
                 "enum": [ "B", "E" ]
             },
-            "complete-events": {
+            "completeEvent-phases": {
                 "type": "string",
                 "enum": [ "X" ]
             },
-            "instant-events": {
+            "instantEvent-phases": {
                 "type": "string",
                 "enum": [ "I" ]
             },
-            "counter-events": {
+            "counterEvent-phases": {
                 "type": "string",
                 "enum": [ "C" ]
             },
-            "async-events": {
+            "asyncEvent-phases": {
                 "type": "string",
                 "enum": [ "b", "n", "e" ]
             },
-            "flow-events": {
+            "flowEvent-phases": {
                 "type": "string",
                 "enum": [ "s", "f", "t" ]
             },
-            "sample-events": {
+            "sampleEvent-phases": {
                 "type": "string",
                 "enum": [ "P" ]
             },
-            "object-events": {
+            "objectEvent-phases": {
                 "type": "string",
                 "enum": [ "N", "O", "D" ]
             },
-            "metadata-events": {
+            "metadataEvent-phases": {
                 "type": "string",
                 "enum": [ "M" ]
             }
@@ -73,25 +71,25 @@
             "base-event": {
                 "type": "object",
                 "properties": {
-                    "cat": { "$ref": "#/definitions/fields/category" },
-                    "name": {  "$ref": "#/definitions/fields/name" },
-                    "pid": { "$ref": "#/definitions/fields/process-id" },
-                    "dur": { "$ref": "#/definitions/fields/duration" },
-                    "ts": { "$ref": "#/definitions/fields/timestamp" },
-                    "tid": { "$ref": "#/definitions/fields/thread-id" },
+                    "cat":  { "$ref": "#/definitions/fields/category" },
+                    "name": { "$ref": "#/definitions/fields/name" },
+                    "pid":  { "$ref": "#/definitions/fields/process-id" },
+                    "dur":  { "$ref": "#/definitions/fields/duration" },
+                    "ts":   { "$ref": "#/definitions/fields/timestamp" },
+                    "tid":  { "$ref": "#/definitions/fields/thread-id" },
                     "tdur": { "$ref": "#/definitions/fields/thread-duration" },
-                    "tts": { "$ref": "#/definitions/fields/thread-timestamp" },
-                    "ph": {
+                    "tts":  { "$ref": "#/definitions/fields/thread-timestamp" },
+                    "ph":   {
                         "anyOf": [
-                            { "$ref": "#/definitions/phases-of/duration-events" },
-                            { "$ref": "#/definitions/phases-of/complete-events" },
-                            { "$ref": "#/definitions/phases-of/instant-events" },
-                            { "$ref": "#/definitions/phases-of/counter-events" },
-                            { "$ref": "#/definitions/phases-of/async-events" },
-                            { "$ref": "#/definitions/phases-of/flow-events" },
-                            { "$ref": "#/definitions/phases-of/sample-events" },
-                            { "$ref": "#/definitions/phases-of/object-events" },
-                            { "$ref": "#/definitions/phases-of/metadata-events" }
+                            { "$ref": "#/definitions/fields/durationEvent-phases" },
+                            { "$ref": "#/definitions/fields/completeEvent-phases" },
+                            { "$ref": "#/definitions/fields/instantEvent-phases" },
+                            { "$ref": "#/definitions/fields/counterEvent-phases" },
+                            { "$ref": "#/definitions/fields/asyncEvent-phases" },
+                            { "$ref": "#/definitions/fields/flowEvent-phases" },
+                            { "$ref": "#/definitions/fields/sampleEvent-phases" },
+                            { "$ref": "#/definitions/fields/objectEvent-phases" },
+                            { "$ref": "#/definitions/fields/metadataEvent-phases" }
                         ]
                     }
                 }
@@ -105,7 +103,7 @@
                     {
                         "properties": {
                             "ph": {
-                                "$ref": "#/definitions/phases-of/duration-events"
+                                "$ref": "#/definitions/fields/durationEvent-phases"
                             }
                         }
                     }
@@ -130,7 +128,7 @@
                                 ]
                             },
                             "ph": {
-                                "$ref": "#/definitions/phases-of/metadata-events"
+                                "$ref": "#/definitions/fields/metadataEvent-phases"
                             }
                         }
                     }
@@ -145,7 +143,7 @@
                         "properties": {
                             "ph": {
                                 "allOf": [
-                                    { "$ref": "#/definitions/phases-of/async-events" }
+                                    { "$ref": "#/definitions/fields/asyncEvent-phases" }
                                 ]
                             }
                         }
