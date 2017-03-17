@@ -14,10 +14,15 @@ def main(argv):
 
     jsonFile = open(argv[1])
     jsonContents = jsonFile.read()
+    jsonContents = jsonContents.replace('false', 'False')
+    jsonContents = jsonContents.replace('true', 'True')
+
     jsonFile.close()
 
     schemaFile = open(argv[2])
     jsonSchema = schemaFile.read()
+    jsonSchema = jsonSchema.replace('false', 'False')
+    jsonSchema = jsonSchema.replace('true', 'True')
     schemaFile.close()
 
     try:
